@@ -39,7 +39,7 @@ describe("GET /api/categories", () => {
   });
 });
 
-describe.only("GET /api/reviews", () => {
+describe("GET /api/reviews", () => {
   test("status: 200, responds with array of review objects sorted by date in descending order", () => {
     return request(app)
       .get("/api/reviews")
