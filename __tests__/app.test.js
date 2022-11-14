@@ -49,7 +49,6 @@ describe("GET /api/reviews", () => {
         expect(res.body.reviews).toBeSortedBy("created_at", {
           descending: true,
         });
-        console.log(res.body.reviews);
         res.body.reviews.forEach((review) => {
           expect(review).toMatchObject({
             review_id: expect.any(Number),
