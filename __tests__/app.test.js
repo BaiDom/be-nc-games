@@ -46,6 +46,7 @@ describe("GET /api/reviews", () => {
       .expect(200)
       .then((res) => {
         expect(res.body.reviews).toBeInstanceOf(Array);
+        expect(res.body.reviews.length).toBe(13);
         expect(res.body.reviews).toBeSortedBy("created_at", {
           descending: true,
         });
