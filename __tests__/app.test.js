@@ -106,12 +106,12 @@ describe("Get /api/reviews/:review_id", () => {
         expect(body.msg).toBe("Path not found");
       });
   });
-  test("status: 404 - Review not found, if client makes request on valid path but no review exists", () => {
+  test("status: 400 - Invalid review id, if client makes request on valid path but no review exists", () => {
     return request(app)
       .get("/api/reviews/99")
-      .expect(404)
+      .expect(400)
       .then(({ body }) => {
-        expect(body.msg).toBe("Review not found");
+        expect(body.msg).toBe("Invalid review id");
       });
   });
 });
@@ -123,7 +123,7 @@ describe("GET /api/reviews/:review_id/comments", () => {
       .expect(200)
       .then(({ body }) => {
         expect(body.reviews).toBeInstanceOf(Array);
-        expect(body.reviews.length).toBeGreaterThan(0);
+        expect(body.reviews.length).toBe(3);
         expect(body.reviews).toBeSortedBy("created_at", {
           descending: true,
         });
@@ -148,12 +148,12 @@ describe("GET /api/reviews/:review_id/comments", () => {
         expect(body.msg).toBe("Path not found");
       });
   });
-  test("status: 404 - Review not found, if client makes request on valid path but no review exists", () => {
+  test("status: 400 - Invalid review id, if client makes request on valid path but no review exists", () => {
     return request(app)
       .get("/api/reviews/99/comments")
-      .expect(404)
+      .expect(400)
       .then(({ body }) => {
-        expect(body.msg).toBe("Review not found");
+        expect(body.msg).toBe("Invalid review id");
       });
   });
   test("status: 200 - returns empy array if client makes request on valid path and review exists but no comments exist", () => {
