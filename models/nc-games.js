@@ -1,5 +1,6 @@
 const db = require("../db/connection.js");
 const comments = require("../db/data/test-data/comments.js");
+const { checkReviewExists } = require("../db/seeds/utils.js");
 
 exports.fetchCategories = () => {
   return db.query("SELECT * FROM categories;").then((result) => {
@@ -34,6 +35,21 @@ exports.fetchReviewsById = (review_id) => {
       if (res.rows.length === 0) {
         return Promise.reject({ status: 404, msg: "Review not found" });
       }
+      return res.rows;
+    });
+};
+
+exports.fetchCommentsByReviewId = (review_id) => {
+  return checkReviewExists(review_id)
+    .then(() => {
+      return db.query(
+        `
+    SELECT * FROM comments WHERE review_id = $1 ORDER BY created_at DESC;
+    `,
+        [review_id]
+      );
+    })
+    .then((res) => {
       return res.rows;
     });
 };
