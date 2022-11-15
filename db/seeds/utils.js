@@ -33,7 +33,7 @@ exports.checkReviewExists = (review_id) => {
     )
     .then((res) => {
       if (res.rows.length === 0) {
-        return Promise.reject({ status: 404, msg: "Review not found" });
+        return Promise.reject({ status: 400, msg: "Invalid review id" });
       }
     });
 };
