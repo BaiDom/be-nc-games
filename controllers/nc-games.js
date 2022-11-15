@@ -2,6 +2,7 @@ const {
   fetchCategories,
   fetchReviews,
   fetchReviewsById,
+  fetchCommentsByReviewId,
 } = require("../models/nc-games");
 
 exports.getCategories = (req, res, next) => {
@@ -27,6 +28,17 @@ exports.getReviews = (req, res, next) => {
 exports.getReviewsById = (req, res, next) => {
   const { review_id } = req.params;
   fetchReviewsById(review_id)
+    .then((reviews) => {
+      res.status(200).send({ reviews });
+    })
+    .catch((err) => {
+      next(err);
+    });
+};
+
+exports.getCommentsByReviewId = (req, res, next) => {
+  const { review_id } = req.params;
+  fetchCommentsByReviewId(review_id)
     .then((reviews) => {
       res.status(200).send({ reviews });
     })
