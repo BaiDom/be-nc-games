@@ -156,12 +156,84 @@ describe("GET /api/reviews/:review_id/comments", () => {
         expect(body.msg).toBe("Invalid review id");
       });
   });
-  test("status: 200 - returns empy array if client makes request on valid path and review exists but no comments exist", () => {
+  test("status: 200 - returns empty array if client makes request on valid path and review exists but no comments exist", () => {
     return request(app)
       .get("/api/reviews/1/comments")
       .expect(200)
       .then(({ body }) => {
         expect(body.reviews).toEqual([]);
+      });
+  });
+});
+
+describe("POST /api/reviews/:review_id/comments", () => {
+  test("status 201: Comment added successfully", () => {
+    const newComment = {
+      username: "bainesface",
+      body: "This boardgame stole my shoes",
+    };
+    return request(app)
+      .post("/api/reviews/2/comments")
+      .send(newComment)
+      .expect(201)
+      .then(({ body }) => {
+        expect(body.comment).toEqual({
+          comment_id: 7,
+          review_id: 2,
+          body: "This boardgame stole my shoes",
+          votes: 0,
+          author: "bainesface",
+          created_at: expect.any(String),
+        });
+      });
+  });
+  test("status: 404 - Path not found, if client makes request on invalid path", () => {
+    const newComment = {
+      username: "bainesface",
+      body: "This boardgame stole my shoes",
+    };
+    return request(app)
+      .post("/api/reviews/2/showcomments")
+      .send(newComment)
+      .expect(404)
+      .then(({ body }) => {
+        expect(body.msg).toBe("Path not found");
+      });
+  });
+  test("status: 400 - Invalid review id, if client makes request on valid path but no review exists", () => {
+    const newComment = {
+      username: "bainesface",
+      body: "This boardgame stole my shoes",
+    };
+    return request(app)
+      .post("/api/reviews/99/comments")
+      .send(newComment)
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toBe("Invalid review id");
+      });
+  });
+  test("status: 400 - Bad request, if client tries to make post request with malformed body or body is missing required fields", () => {
+    const newComment = {};
+    return request(app)
+      .post("/api/reviews/1/comments")
+      .send(newComment)
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toBe("Bad request");
+      });
+  });
+  test("status: 400 - Bad request, if client's post request uses invalid data types", () => {
+    const newComment = {
+      username: 500,
+      body: {},
+    };
+    return request(app)
+      .post("/api/reviews/1/comments")
+      .send(newComment)
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toBe("Bad request");
       });
   });
 });
