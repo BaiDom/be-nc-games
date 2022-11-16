@@ -236,4 +236,89 @@ describe("POST /api/reviews/:review_id/comments", () => {
         expect(body.msg).toBe("Bad request");
       });
   });
+  test("status: 400 - Bad request, if client's request uses valid data type but invalid username", () => {
+    const newComment = { username: "steve", body: "steve's comment" };
+    return request(app)
+      .post("/api/reviews/1/comments")
+      .send(newComment)
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toBe("Bad request");
+      });
+  });
+});
+
+describe("PATCH /api/reviews/:review_id", () => {
+  test("status: 200 - Patch successful", () => {
+    const newPatch = { inc_votes: 10 };
+    return request(app)
+      .patch("/api/reviews/1")
+      .send(newPatch)
+      .expect(200)
+      .then(({ body }) => {
+        expect(body.review).toBeInstanceOf(Object);
+        expect(body.review).toMatchObject({
+          review_id: 1,
+          title: "Agricola",
+          category: "euro game",
+          designer: "Uwe Rosenberg",
+          owner: "mallionaire",
+          review_body: "Farmyard fun!",
+          review_img_url:
+            "https://www.golenbock.com/wp-content/uploads/2015/01/placeholder-user.png",
+          created_at: expect.any(String),
+          votes: 11,
+        });
+      });
+  });
+  test("status: 404 - Path not found, if client makes request on invalid path", () => {
+    const newPatch = { inc_votes: 10 };
+    return request(app)
+      .patch("/api/revuse/1")
+      .send(newPatch)
+      .expect(404)
+      .then(({ body }) => {
+        expect(body.msg).toBe("Path not found");
+      });
+  });
+  test("status: 400 - Invalid review id, if client makes request on valid path but no review exists", () => {
+    const newPatch = { inc_votes: 10 };
+    return request(app)
+      .patch("/api/reviews/999")
+      .send(newPatch)
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toBe("Invalid review id");
+      });
+  });
+  test("status: 400 - Bad request, if clients request is made with malformed body or body is missing required fields", () => {
+    const newPatch = {};
+    return request(app)
+      .patch("/api/reviews/1")
+      .send(newPatch)
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toBe("Bad request");
+      });
+  });
+  test("status: 400 - Bad request, if client's request uses incorrect key in object", () => {
+    const newPatch = { update_votes: 10 };
+    return request(app)
+      .patch("/api/reviews/1")
+      .send(newPatch)
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toBe("Bad request");
+      });
+  });
+  test("status: 400 - Bad request, if client's request uses invalid data types", () => {
+    const newPatch = { inc_votes: "yes" };
+    return request(app)
+      .patch("/api/reviews/1")
+      .send(newPatch)
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toBe("Bad request");
+      });
+  });
 });
