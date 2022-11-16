@@ -213,4 +213,27 @@ describe("POST /api/reviews/:review_id/comments", () => {
         expect(body.msg).toBe("Invalid review id");
       });
   });
+  test("status: 400 - Bad request, if client tries to make post request with malformed body or body is missing required fields", () => {
+    const newComment = {};
+    return request(app)
+      .post("/api/reviews/1/comments")
+      .send(newComment)
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toBe("Bad request");
+      });
+  });
+  test("status: 400 - Bad request, if client's post request uses invalid data types", () => {
+    const newComment = {
+      username: 500,
+      body: {},
+    };
+    return request(app)
+      .post("/api/reviews/1/comments")
+      .send(newComment)
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toBe("Bad request");
+      });
+  });
 });
