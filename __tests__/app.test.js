@@ -318,7 +318,7 @@ describe("PATCH /api/reviews/:review_id", () => {
       .send(newPatch)
       .expect(400)
       .then(({ body }) => {
-        expect(body.msg).toBe("Bad request");
+        expect(body.msg).toBe("Invalid input");
       });
   });
 });
