@@ -156,7 +156,7 @@ describe("GET /api/reviews/:review_id/comments", () => {
         expect(body.msg).toBe("Invalid review id");
       });
   });
-  test("status: 200 - returns empy array if client makes request on valid path and review exists but no comments exist", () => {
+  test("status: 200 - returns empty array if client makes request on valid path and review exists but no comments exist", () => {
     return request(app)
       .get("/api/reviews/1/comments")
       .expect(200)
