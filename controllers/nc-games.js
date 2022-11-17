@@ -6,6 +6,7 @@ const {
   insertCommentByReviewId,
   updateReviewVotes,
   fetchUsers,
+  fetchReviewsWithCommentCount,
 } = require("../models/nc-games");
 
 exports.getCategories = (req, res, next) => {
@@ -31,8 +32,8 @@ exports.getReviews = (req, res, next) => {
 exports.getReviewsById = (req, res, next) => {
   const { review_id } = req.params;
   fetchReviewsById(review_id)
-    .then((reviews) => {
-      res.status(200).send({ reviews });
+    .then((review) => {
+      res.status(200).send({ review });
     })
     .catch((err) => {
       next(err);
