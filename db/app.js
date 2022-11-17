@@ -7,6 +7,7 @@ const {
   postCommentByReviewId,
   patchReviewVotes,
   getUsers,
+  getReviewsWithCommentCount,
 } = require("../controllers/nc-games");
 
 const app = express();

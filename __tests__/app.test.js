@@ -82,38 +82,40 @@ describe("Get /api/reviews/:review_id", () => {
       .get("/api/reviews/1")
       .expect(200)
       .then(({ body }) => {
-        expect(body.reviews).toBeInstanceOf(Array);
-        expect(body.reviews.length).toBe(1);
-        body.reviews.forEach((review) => {
-          expect(review).toMatchObject({
-            review_id: 1,
-            designer: expect.any(String),
-            owner: expect.any(String),
-            review_img_url: expect.any(String),
-            review_body: expect.any(String),
-            category: expect.any(String),
-            created_at: expect.any(String),
-            votes: expect.any(Number),
-          });
+        expect(body.review).toBeInstanceOf(Array);
+        console.log(body.review, "<<< body.review/1");
+        expect(body.review.length).toBe(1);
+        expect(body.review[0]).toMatchObject({
+          review_id: 1,
+          title: "Agricola",
+          category: "euro game",
+          designer: "Uwe Rosenberg",
+          owner: "mallionaire",
+          review_body: "Farmyard fun!",
+          review_img_url:
+            "https://www.golenbock.com/wp-content/uploads/2015/01/placeholder-user.png",
+          created_at: expect.any(String),
+          votes: 1,
+          comment_count: 0,
         });
       });
   });
-  test("status: 404 - Path not found, if client makes request on invalid path", () => {
-    return request(app)
-      .get("/api/reviewsbyid/1")
-      .expect(404)
-      .then(({ body }) => {
-        expect(body.msg).toBe("Path not found");
-      });
-  });
-  test("status: 400 - Invalid review id, if client makes request on valid path but no review exists", () => {
-    return request(app)
-      .get("/api/reviews/99")
-      .expect(400)
-      .then(({ body }) => {
-        expect(body.msg).toBe("Invalid review id");
-      });
-  });
+});
+test("status: 404 - Path not found, if client makes request on invalid path", () => {
+  return request(app)
+    .get("/api/reviewsbyid/1")
+    .expect(404)
+    .then(({ body }) => {
+      expect(body.msg).toBe("Path not found");
+    });
+});
+test("status: 400 - Invalid review id, if client makes request on valid path but no review exists", () => {
+  return request(app)
+    .get("/api/reviews/99")
+    .expect(400)
+    .then(({ body }) => {
+      expect(body.msg).toBe("Invalid review id");
+    });
 });
 
 describe("GET /api/reviews/:review_id/comments", () => {
@@ -346,6 +348,46 @@ describe("GET /api/users", () => {
       .expect(404)
       .then(({ body }) => {
         expect(body.msg).toBe("Path not found");
+      });
+  });
+});
+
+describe("GET /api/reviews/:review_id (comment count)", () => {
+  test("status: 200, responds with review object of review_id specified by clients request with comment count", () => {
+    return request(app)
+      .get("/api/reviews/2")
+      .expect(200)
+      .then(({ body }) => {
+        expect(body.review).toBeInstanceOf(Array);
+        expect(body.review[0]).toMatchObject({
+          review_id: 2,
+          title: "Jenga",
+          category: "dexterity",
+          designer: "Leslie Scott",
+          owner: "philippaclaire9",
+          review_body: "Fiddly fun for all the family",
+          review_img_url:
+            "https://www.golenbock.com/wp-content/uploads/2015/01/placeholder-user.png",
+          created_at: expect.any(String),
+          votes: 5,
+          comment_count: 3,
+        });
+      });
+  });
+  test("status: 404 - Path not found, if client makes request on invalid path", () => {
+    return request(app)
+      .get("/api/reviewsbyid/2")
+      .expect(404)
+      .then(({ body }) => {
+        expect(body.msg).toBe("Path not found");
+      });
+  });
+  test("status: 400 - Invalid review id, if client makes request on valid path but no review exists", () => {
+    return request(app)
+      .get("/api/reviews/99")
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toBe("Invalid review id");
       });
   });
 });
