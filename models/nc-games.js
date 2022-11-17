@@ -81,3 +81,9 @@ exports.updateReviewVotes = (review_id, patch) => {
       return res.rows[0];
     });
 };
+
+exports.fetchUsers = () => {
+  return db.query("SELECT * FROM users;").then((res) => {
+    return res.rows;
+  });
+};
