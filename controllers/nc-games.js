@@ -4,6 +4,7 @@ const {
   fetchReviewsById,
   fetchCommentsByReviewId,
   insertCommentByReviewId,
+  updateReviewVotes,
 } = require("../models/nc-games");
 
 exports.getCategories = (req, res, next) => {
@@ -53,6 +54,17 @@ exports.postCommentByReviewId = (req, res, next) => {
   insertCommentByReviewId(req.body, review_id)
     .then((comment) => {
       res.status(201).send({ comment });
+    })
+    .catch((err) => {
+      next(err);
+    });
+};
+
+exports.patchReviewVotes = (req, res, next) => {
+  const { review_id } = req.params;
+  updateReviewVotes(review_id, req.body)
+    .then((review) => {
+      res.status(200).send({ review });
     })
     .catch((err) => {
       next(err);

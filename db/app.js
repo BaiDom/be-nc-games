@@ -5,6 +5,7 @@ const {
   getReviewsById,
   getCommentsByReviewId,
   postCommentByReviewId,
+  patchReviewVotes,
 } = require("../controllers/nc-games");
 
 const app = express();
@@ -15,6 +16,7 @@ app.get("/api/reviews", getReviews);
 app.get("/api/reviews/:review_id", getReviewsById);
 app.get("/api/reviews/:review_id/comments", getCommentsByReviewId);
 app.post("/api/reviews/:review_id/comments", postCommentByReviewId);
+app.patch("/api/reviews/:review_id", patchReviewVotes);
 
 app.all("/*", (req, res, next) => {
   res.status(404).send({ msg: "Path not found" });
@@ -31,6 +33,8 @@ app.use((err, req, res, next) => {
 app.use((err, req, res, next) => {
   if (err.code === "23502" || err.code === "23503") {
     res.status(400).send({ msg: "Bad request" });
+  } else if (err.code === "22P02") {
+    res.status(400).send({ msg: "Invalid input" });
   } else {
     next(err);
   }

@@ -67,3 +67,17 @@ exports.insertCommentByReviewId = (comment, review_id) => {
       return res.rows[0];
     });
 };
+
+exports.updateReviewVotes = (review_id, patch) => {
+  const { inc_votes } = patch;
+  const queryStr = `
+  UPDATE reviews SET votes = votes + $1 WHERE review_id = $2 RETURNING *;`;
+  const queryVals = [inc_votes, review_id];
+  return checkReviewExists(review_id)
+    .then(() => {
+      return db.query(queryStr, queryVals);
+    })
+    .then((res) => {
+      return res.rows[0];
+    });
+};
