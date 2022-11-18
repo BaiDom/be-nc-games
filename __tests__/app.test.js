@@ -665,13 +665,12 @@ describe("GET /api/reviews (queries)", () => {
   });
 });
 
-describe.only("GET /api/comments", () => {
+describe("GET /api/comments", () => {
   test("status: 200 - returns array of comments", () => {
     return request(app)
       .get("/api/comments")
       .expect(200)
       .then(({ body }) => {
-        console.log(body);
         expect(body.comments).toHaveLength(6);
         expect(body.comments).toEqual([
           {
