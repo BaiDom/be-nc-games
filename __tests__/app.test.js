@@ -454,6 +454,9 @@ describe("GET /api/reviews (queries)", () => {
         expect(body.reviews).toBeSortedBy("votes", {
           descending: true,
         });
+        body.reviews.forEach((review) => {
+          expect(review).toContainEntry(["category", "social deduction"]);
+        });
         expect(body.reviews).toEqual([
           {
             review_id: 12,
