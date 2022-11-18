@@ -1,5 +1,4 @@
 const db = require("../db/connection.js");
-const comments = require("../db/data/test-data/comments.js");
 const {
   checkReviewExists,
   checkCommentExists,
