@@ -768,3 +768,14 @@ describe("DELETE /api/comments/:comment_id", () => {
       });
   });
 });
+
+describe("GET /API", () => {
+  test("status: 200 - All ok", () => {
+    return request(app)
+      .get("/api")
+      .expect(200)
+      .then((res) => {
+        expect(typeof res.body).toBe("object");
+      });
+  });
+});
