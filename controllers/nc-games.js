@@ -8,7 +8,9 @@ const {
   fetchUsers,
   removeCommentById,
   fetchComments,
+  fetchAPI,
 } = require("../models/nc-games");
+const endpoints = require("../endpoints.json");
 
 exports.getCategories = (req, res, next) => {
   fetchCategories()
@@ -106,4 +108,8 @@ exports.deleteCommentsById = (req, res, next) => {
     .catch((err) => {
       next(err);
     });
+};
+
+exports.getAPI = (req, res, next) => {
+  res.status(200).send({ endpoints });
 };

@@ -665,12 +665,13 @@ describe("GET /api/reviews (queries)", () => {
   });
 });
 
-describe("GET /api/comments", () => {
+describe.only("GET /api/comments", () => {
   test("status: 200 - returns array of comments", () => {
     return request(app)
       .get("/api/comments")
       .expect(200)
       .then(({ body }) => {
+        console.log(body);
         expect(body.comments).toHaveLength(6);
         expect(body.comments).toEqual([
           {
@@ -765,6 +766,17 @@ describe("DELETE /api/comments/:comment_id", () => {
       .expect(400)
       .then(({ body }) => {
         expect(body.msg).toBe("Invalid comment id");
+      });
+  });
+});
+
+describe("GET /API", () => {
+  test("status: 200 - All ok", () => {
+    return request(app)
+      .get("/api")
+      .expect(200)
+      .then((res) => {
+        expect(typeof res.body).toBe("object");
       });
   });
 });
