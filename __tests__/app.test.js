@@ -664,3 +664,107 @@ describe("GET /api/reviews (queries)", () => {
       });
   });
 });
+
+describe("GET /api/comments", () => {
+  test("status: 200 - returns array of comments", () => {
+    return request(app)
+      .get("/api/comments")
+      .expect(200)
+      .then(({ body }) => {
+        expect(body.comments).toHaveLength(6);
+        expect(body.comments).toEqual([
+          {
+            comment_id: 1,
+            body: "I loved this game too!",
+            review_id: 2,
+            author: "bainesface",
+            votes: 16,
+            created_at: "2017-11-22T12:43:33.389Z",
+          },
+          {
+            comment_id: 2,
+            body: "My dog loved this game too!",
+            review_id: 3,
+            author: "mallionaire",
+            votes: 13,
+            created_at: "2021-01-18T10:09:05.410Z",
+          },
+          {
+            comment_id: 3,
+            body: "I didn't know dogs could play games",
+            review_id: 3,
+            author: "philippaclaire9",
+            votes: 10,
+            created_at: "2021-01-18T10:09:48.110Z",
+          },
+          {
+            comment_id: 4,
+            body: "EPIC board game!",
+            review_id: 2,
+            author: "bainesface",
+            votes: 16,
+            created_at: "2017-11-22T12:36:03.389Z",
+          },
+          {
+            comment_id: 5,
+            body: "Now this is a story all about how, board games turned my life upside down",
+            review_id: 2,
+            author: "mallionaire",
+            votes: 13,
+            created_at: "2021-01-18T10:24:05.410Z",
+          },
+          {
+            comment_id: 6,
+            body: "Not sure about dogs, but my cat likes to get involved with board games, the boxes are their particular favourite",
+            review_id: 3,
+            author: "philippaclaire9",
+            votes: 10,
+            created_at: "2021-03-27T19:49:48.110Z",
+          },
+        ]);
+      });
+  });
+  test("status: 404 - Path not found, client makes request on invalid path", () => {
+    return request(app)
+      .get("/api/showcomments")
+      .expect(404)
+      .then(({ body }) => {
+        expect(body.msg).toBe("Path not found");
+      });
+  });
+});
+
+describe("DELETE /api/comments/:comment_id", () => {
+  test("status: 204 - No content, successfully deletes comment and returns empty object", () => {
+    return request(app)
+      .delete("/api/comments/1")
+      .expect(204)
+      .then(({ body }) => {
+        expect(body).toEqual({});
+      });
+  });
+  test("GET - status: 200, returns data array with length reduced by deleted comment", () => {
+    return request(app)
+      .get("/api/comments")
+      .expect(200)
+      .then(({ body }) => {
+        expect(body.comments).toHaveLength(6);
+      });
+  });
+  test("status: 404 - Path not found, request made on invalid path", () => {
+    return request(app)
+      .delete("/api/showcomments")
+      .expect(404)
+      .then(({ body }) => {
+        expect(body.msg).toBe("Path not found");
+      });
+  });
+  test("status: 400 - Invalid comment id, request made on valid path but comment does not exist", () => {
+    return request(app)
+      .delete("/api/comments/99")
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toBe("Invalid comment id");
+      });
+  });
+});

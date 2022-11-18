@@ -6,7 +6,8 @@ const {
   insertCommentByReviewId,
   updateReviewVotes,
   fetchUsers,
-  fetchReviewsWithCommentCount,
+  removeCommentById,
+  fetchComments,
 } = require("../models/nc-games");
 
 exports.getCategories = (req, res, next) => {
@@ -80,6 +81,27 @@ exports.getUsers = (req, res, next) => {
   fetchUsers()
     .then((users) => {
       res.status(200).send({ users });
+    })
+    .catch((err) => {
+      next(err);
+    });
+};
+
+exports.getComments = (req, res, next) => {
+  fetchComments()
+    .then((comments) => {
+      res.status(200).send({ comments });
+    })
+    .catch((err) => {
+      next(err);
+    });
+};
+
+exports.deleteCommentsById = (req, res, next) => {
+  const { comment_id } = req.params;
+  removeCommentById(comment_id)
+    .then(() => {
+      res.sendStatus(204);
     })
     .catch((err) => {
       next(err);
