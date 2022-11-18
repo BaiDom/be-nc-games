@@ -7,7 +7,8 @@ const {
   postCommentByReviewId,
   patchReviewVotes,
   getUsers,
-  getReviewsWithCommentCount,
+  deleteCommentsById,
+  getComments,
 } = require("../controllers/nc-games");
 
 const app = express();
@@ -20,6 +21,8 @@ app.get("/api/reviews/:review_id/comments", getCommentsByReviewId);
 app.post("/api/reviews/:review_id/comments", postCommentByReviewId);
 app.patch("/api/reviews/:review_id", patchReviewVotes);
 app.get("/api/users", getUsers);
+app.delete("/api/comments/:comment_id", deleteCommentsById);
+app.get("/api/comments", getComments);
 
 app.all("/*", (req, res, next) => {
   res.status(404).send({ msg: "Path not found" });
