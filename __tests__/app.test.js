@@ -398,6 +398,9 @@ describe("GET /api/reviews (queries)", () => {
       .expect(200)
       .then(({ body }) => {
         expect(body.reviews).toBeInstanceOf(Array);
+        body.reviews.forEach((review) => {
+          expect(review).toContainEntry(["category", "dexterity"]);
+        });
         expect(body.reviews[0]).toMatchObject({
           review_id: 2,
           title: "Jenga",
