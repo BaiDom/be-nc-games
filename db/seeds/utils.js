@@ -37,3 +37,13 @@ exports.checkReviewExists = (review_id) => {
       }
     });
 };
+
+exports.checkCategoryExists = (category) => {
+  return db
+    .query(`SELECT * FROM reviews WHERE category = $1;`, [category])
+    .then((res) => {
+      if (res.rows.length === 0) {
+        return Promise.reject({ status: 400, msg: "Invalid category" });
+      }
+    });
+};
