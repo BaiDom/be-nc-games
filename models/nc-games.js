@@ -1,6 +1,9 @@
 const db = require("../db/connection.js");
 const comments = require("../db/data/test-data/comments.js");
-const { checkReviewExists } = require("../db/seeds/utils.js");
+const {
+  checkReviewExists,
+  checkCommentExists,
+} = require("../db/seeds/utils.js");
 
 exports.fetchCategories = () => {
   return db.query("SELECT * FROM categories;").then((result) => {
@@ -128,4 +131,23 @@ exports.fetchUsers = () => {
   return db.query("SELECT * FROM users;").then((res) => {
     return res.rows;
   });
+};
+
+exports.fetchComments = () => {
+  return db.query(`SELECT * FROM comments`).then((res) => {
+    return res.rows;
+  });
+};
+
+exports.removeCommentById = (comment_id) => {
+  return checkCommentExists(comment_id)
+    .then(() => {
+      return db.query(
+        `DELETE FROM comments WHERE comment_id = $1 RETURNING *`,
+        [comment_id]
+      );
+    })
+    .then((res) => {
+      return res;
+    });
 };
