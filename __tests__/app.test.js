@@ -397,6 +397,7 @@ describe("GET /api/reviews (queries)", () => {
       .get("/api/reviews?category=dexterity")
       .expect(200)
       .then(({ body }) => {
+        console.log(body, "body in test");
         expect(body.reviews).toBeInstanceOf(Array);
         body.reviews.forEach((review) => {
           expect(review).toContainEntry(["category", "dexterity"]);

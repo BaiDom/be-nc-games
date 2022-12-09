@@ -19,7 +19,17 @@ exports.fetchReviews = (category, sort_by = "created_at", order = "DESC") => {
   LEFT JOIN comments ON reviews.review_id = comments.review_id`;
 
   if (category) {
-    const validCategory = ["euro game", "dexterity", "social deduction"];
+    const validCategory = [
+      "euro game",
+      "dexterity",
+      "social deduction",
+      "strategy",
+      "hidden-roles",
+      "push-your-luck",
+      "roll-and-write",
+      "deck-building",
+      "engine-building",
+    ];
     if (category && !validCategory.includes(category)) {
       return Promise.reject({ status: 400, msg: "Invalid category" });
     }
