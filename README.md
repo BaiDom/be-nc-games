@@ -2,9 +2,7 @@
 
 The aim of this project was to create a backend for an API containing data and reviews for board games that would allow a user to access this information using specific endpoints.
 
-Hosted version: https://dead-puce-abalone-cap.cyclic.app
-
-For a list of all available endpoints and examples of the data that will be returned visit: https://dead-puce-abalone-cap.cyclic.app/api
+Hosted version with a list of available endpoints: https://dead-puce-abalone-cap.cyclic.app/api
 
 ## Connecting to db locally
 
