@@ -9,4 +9,7 @@ You will need to create two .env files for your project:
 .env.test and .env.development
 
 Into each, add PGDATABASE=<database_name_here>, with the correct database name for that environment e.g. PGDATABASE=nc_games
-(see /db/setup.sql for the database names). Double check that these .env files are .gitignored.
+
+(see /db/setup.sql for the database names).
+
+Double check that these .env files are .gitignored.
